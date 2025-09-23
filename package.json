@@ -1,0 +1,14 @@
+{
+  "name": "ntfy-bridge",
+  "version": "1.0.0",
+  "description": "Discord to NTFY message bridge",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun run index.ts",
+    "dev": "bun --watch index.ts"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1"
+  }
+}

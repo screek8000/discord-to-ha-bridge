@@ -1,0 +1,28 @@
+# Version control
+.git
+.gitignore
+
+# Dependencies
+node_modules
+
+# Environment variables
+.env
+*.env
+
+# Logs
+*.log
+
+# IDE specific files
+.vscode
+.idea
+*.swp
+*.swo
+
+# Build output
+dist
+build
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
