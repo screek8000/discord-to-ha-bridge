@@ -50,7 +50,10 @@ Here's how the notification appears on https://webhook.site:
 
 1. Set up your environment variables in a `.env` file or your environment
 2. Start the service using Docker or manual installation
-3. The bridge will automatically forward messages from the specified Discord channel to your NTFY instance
+3. The bridge will automatically forward messages from the specified Discord channel to your HA webhook
+4. Inside the HA automation the message and user can be accessed as follows:
+    * message: `{{ trigger.json.message }}`
+    * user: `{{ trigger.json.user }}`
 
 ## Contributing
 
