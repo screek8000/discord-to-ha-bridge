@@ -1,19 +1,22 @@
-# ntfy-bridge
+# discord-to-ha-bridge
 
-A Discord to NTFY message bridge that forwards messages from a specific Discord channel to NTFY. This bridge allows you to receive Discord channel messages as notifications through NTFY, enabling seamless integration with your notification workflow.
+A Discord to HA (Home Assistant) message bridge that forwards messages from a specific Discord channel to a HA webhook.
+
+This project is based on https://github.com/alexgaudon/ntfy-bridge. Thanks!
 
 ## Features
 
-- Per-User Topics.
-  - Messages are posted to a topic with the same name as the user who posted to discord. Check the image below for an example.
-- Real-time message forwarding from Discord to NTFY
-- Support for authentication with NTFY servers
+- Messages from Discord are posted to a HA webhook
+- The POST request contains a json body with the message and the user which sent the message. Check the image below for an example.
+- Real-time message forwarding from Discord to HA
 - Easy setup with environment variables
 - Docker support for containerized deployment
 
 ## Installation
 
 ### Using Docker
+
+Create .env file with environment variables (see below).
 
 ```bash
 docker compose up -d
@@ -35,15 +38,13 @@ The following environment variables are required:
 
 - `DISCORD_BOT_TOKEN`: Your Discord bot token
 - `DISCORD_CHANNEL_ID`: The ID of the Discord channel to monitor
-- `NTFY_URL`: The base URL of your NTFY server
-- `NTFY_AUTH_TOKEN`: Authentication token for NTFY (optional)
-- `NTFY_PREFIX`: A hardcoded prefix before the discord username (optional)
+- `HA_WEBHOOK_URL`: The webhook URL of your HA server (or other kind of server that supports json POST requests). E.g. http://home-assistant:8123/api/webhook/-ZCo5AqOJ1ybvLA5o_50M4N0m
 
 ## Example
 
-Here's how the notifications appear in NTFY:
+Here's how the notification appears on https://webhook.site:
 
-![NTFY notification example](assets/example.png)
+![HA notification example](assets/webhook.site-example.png)
 
 ## Usage
 

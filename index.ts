@@ -6,10 +6,8 @@ interface Config {
     botToken: string;
     channelId: string;
   };
-  ntfy: {
+  ha: {
     url: string;
-    authToken?: string;
-    prefix?: string;
   };
 }
 
@@ -19,10 +17,8 @@ const config: Config = {
     botToken: process.env.DISCORD_BOT_TOKEN || "",
     channelId: process.env.DISCORD_CHANNEL_ID || "",
   },
-  ntfy: {
-    url: process.env.NTFY_URL || "",
-    authToken: process.env.NTFY_AUTH_TOKEN,
-    prefix: process.env.NTFY_PREFIX,
+  ha: {
+    url: process.env.HA_WEBHOOK_URL || "",
   },
 };
 
@@ -30,7 +26,7 @@ function validateConfig(config: Config): void {
   const requiredFields = [
     { value: config.discord.botToken, name: "DISCORD_BOT_TOKEN" },
     { value: config.discord.channelId, name: "DISCORD_CHANNEL_ID" },
-    { value: config.ntfy.url, name: "NTFY_URL" },
+    { value: config.ha.url, name: "HA_WEBHOOK_URL" },
   ];
 
   const missingFields = requiredFields
@@ -57,42 +53,37 @@ const client = new Client({
   ],
 });
 
-// NTFY message handling
-async function sendToNtfy(content: string, username: string): Promise<void> {
-  const topic = `${config.ntfy.prefix || ""}${username}`;
-  const url = `${config.ntfy.url}${topic}`;
+// HA message handling
+async function sendToHa(content: string, username: string): Promise<void> {
+  const url = `${config.ha.url}`;
+  const json = { "message": content, "user": username };
 
   try {
-    const headers: Record<string, string> = {
-      "Content-Type": "application/json",
-    };
-
-    if (config.ntfy.authToken) {
-      headers.Authorization = `Bearer ${config.ntfy.authToken}`;
-    }
 
     const response = await fetch(url, {
       method: "POST",
-      headers,
-      body: content,
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(json)
     });
 
     if (!response.ok) {
       throw new Error(
-        `NTFY responded with status: ${response.status} ${response.statusText}`
+        `HA responded with status: ${response.status} ${response.statusText}`
       );
     }
 
-    console.log(`Successfully sent message to NTFY topic: ${topic}`);
+    console.log(`Successfully sent message to HA for user: ${username}`);
   } catch (error) {
-    console.error("Failed to send message to NTFY:", error);
+    console.error("Failed to send message to HA:", error);
   }
 }
 
 // Discord event handlers
 client.on(Events.MessageCreate, async (message) => {
   if (message.channelId === config.discord.channelId) {
-    await sendToNtfy(message.content, message.author.username);
+    await sendToHa(message.content, message.author.username);
   }
 });
 
@@ -101,7 +92,7 @@ client.on(Events.Error, (error) => {
 });
 
 client.on(Events.ClientReady, (c) => {
-  console.log(`Logged in as ${c.user.tag}`);
+  console.log(`Logged in to Discord as ${c.user.tag}`);
 });
 
 // Start the Discord client

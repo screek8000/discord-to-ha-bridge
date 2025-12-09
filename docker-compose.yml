@@ -1,12 +1,9 @@
-version: "3.8"
-
 services:
-  ntfy-bridge:
+  discord-to-ha-bridge:
     build: .
-    container_name: ntfy-bridge
+    container_name: discord-to-ha-bridge
     restart: unless-stopped
     environment:
       - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
       - DISCORD_CHANNEL_ID=${DISCORD_CHANNEL_ID}
-      - NTFY_URL=${NTFY_URL}
-      - NTFY_AUTH_TOKEN=${NTFY_AUTH_TOKEN}
+      - HA_WEBHOOK_URL=${HA_WEBHOOK_URL}

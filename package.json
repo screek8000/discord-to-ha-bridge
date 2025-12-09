@@ -1,7 +1,7 @@
 {
-  "name": "ntfy-bridge",
+  "name": "discord-to-ha-bridge",
   "version": "1.0.0",
-  "description": "Discord to NTFY message bridge",
+  "description": "Discord to HA message bridge",
   "module": "index.ts",
   "type": "module",
   "scripts": {
